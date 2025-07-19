@@ -31,7 +31,7 @@ function EditPage() {
     dispatch(
       updateTodo(todos.map((item) => (item.id === todo.id ? todo : item)))
     );
-    navigate("/");
+    // navigate("/");
   };
 
   if (!todo) return <div>Loading...</div>;
