@@ -6,13 +6,18 @@ import { BrowserRouter } from "react-router";
 import "antd/dist/reset.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
 );

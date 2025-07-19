@@ -1,17 +1,19 @@
-import type { RootState } from "../store/store.ts";
-import { Button, Input, Select, Space } from "antd";
+import { Input, Select, Space } from "antd";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { updateTodo } from "../store/todosSlice";
+import { useUpdateTodo } from "../api/index.ts";
+import ReusableButton from "../components/ReusableButton.tsx";
+import type { RootState } from "../store/store.ts";
 import type { TodoItemsInterface } from "../utils/types.ts";
-
+//This is Edit Page Component
 function EditPage() {
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const todos = useSelector((state: RootState) => state.todos.todos);
   const [todo, setTodo] = useState<TodoItemsInterface | null>(null);
+
+  const { mutate: updateTodo } = useUpdateTodo();
 
   useEffect(() => {
     const found = todos.find((item) => item.id === Number(id));
@@ -28,10 +30,14 @@ function EditPage() {
 
   const handleUpdateTodo = () => {
     if (!todo) return;
-    dispatch(
-      updateTodo(todos.map((item) => (item.id === todo.id ? todo : item)))
-    );
-    navigate("/");
+    updateTodo(todo, {
+      onSuccess: () => {
+        navigate("/");
+      },
+      onError: (error) => {
+        console.error("Error updating todo:", error);
+      },
+    });
   };
 
   if (!todo) return <div>Loading...</div>;
@@ -53,17 +59,15 @@ function EditPage() {
           style={{ width: 120 }}
           onChange={handleStatusChange}
           options={[
-            { value: "pending", label: "Pending" },
-            { value: "inprogress", label: "InProgress" },
-            { value: "complete", label: "Complete" },
+            { value: "Pending", label: "Pending" },
+            { value: "InProgress", label: "InProgress" },
+            { value: "Complete", label: "Complete" },
           ]}
         />
       </Space>
 
       <br />
-      <Button onClick={handleUpdateTodo} type="primary">
-        Update
-      </Button>
+      <ReusableButton label="Update Todo" onClickValue={handleUpdateTodo} />
     </div>
   );
 }

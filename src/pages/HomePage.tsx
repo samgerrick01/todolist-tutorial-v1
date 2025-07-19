@@ -1,20 +1,30 @@
 import { Button, Space } from "antd";
-import "../styles/homePage.css";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store/store.ts";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { deleteTodo } from "../store/todosSlice";
+import { useDeleteTodo, useFetchTodos } from "../api/index.ts";
+import type { RootState } from "../store/store.ts";
+import { setAllTodos } from "../store/todosSlice";
+import "../styles/homePage.css";
+import ReusableButton from "../components/ReusableButton.tsx";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { data } = useFetchTodos();
+  const { mutate: deleteTodo } = useDeleteTodo();
   const todos = useSelector((state: RootState) => state.todos.todos);
 
   const handleDelete = (id: number) => {
-    dispatch(deleteTodo(id));
+    deleteTodo(id);
   };
-  console.log("Todos:", todos);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setAllTodos(data));
+    }
+  }, [data]);
+
   return (
     <div className="homePage">
       <h1 className="headerTitle">Todo List App</h1>
@@ -36,7 +46,11 @@ const HomePage = () => {
         <tbody style={{ textAlign: "center" }}>
           {todos.map((todo) => (
             <tr key={todo.id}>
-              <td>{todo.todoItem}</td>
+              <td
+                className={todo.status === "Complete" ? "todoItemComplete" : ""}
+              >
+                {todo.todoItem}
+              </td>
               <td>{todo.status}</td>
               <td>
                 <Space size="middle">
@@ -54,9 +68,10 @@ const HomePage = () => {
         </tbody>
       </table>
       <br />
-      <Button onClick={() => navigate("/addPage")} type="primary">
-        Goto Add Page
-      </Button>
+      <ReusableButton
+        onClickValue={() => navigate("/addPage")}
+        label="Goto Add Page"
+      />
     </div>
   );
 };

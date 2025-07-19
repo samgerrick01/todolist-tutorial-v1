@@ -1,23 +1,30 @@
-import { Button, Input } from "antd";
-import "../styles/addPage.css";
-import { useDispatch } from "react-redux";
+import { Input } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { addTodo } from "../store/todosSlice";
+import { useInsertTodo } from "../api";
+import ReusableButton from "../components/ReusableButton";
+import "../styles/addPage.css";
 
 function AddPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [todoItem, setTodoItem] = useState<string>("");
+  const { mutate: insertTodo } = useInsertTodo();
 
   const handleAddTodo = () => {
-    const newTodo = {
-      id: Date.now(),
-      todoItem: todoItem,
-      status: "Pending",
-    };
-    dispatch(addTodo(newTodo));
-    navigate("/");
+    insertTodo(
+      {
+        todoItem,
+        status: "Pending",
+      },
+      {
+        onSuccess: () => {
+          navigate("/");
+        },
+        onError: (error) => {
+          console.error("Error adding todo:", error);
+        },
+      }
+    );
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +40,7 @@ function AddPage() {
         placeholder="Add todo"
       />
       <br />
-      <Button onClick={handleAddTodo} type="primary">
-        Add
-      </Button>
+      <ReusableButton label="Add Todo" onClickValue={handleAddTodo} />
     </div>
   );
 }
