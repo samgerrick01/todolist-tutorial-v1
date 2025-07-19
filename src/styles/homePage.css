@@ -5,3 +5,8 @@
 .headerTitle {
   text-align: center;
 }
+
+.todoItemComplete {
+  text-decoration: line-through;
+  color: #888;
+}

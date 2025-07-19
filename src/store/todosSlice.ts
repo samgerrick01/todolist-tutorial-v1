@@ -6,26 +6,26 @@ interface TodoSliceInterface {
   todos: TodoItemsInterface[];
 }
 
-const loadTodos = () => {
-  try {
-    const data = localStorage.getItem("todos");
-    return data ? JSON.parse(data) : [];
-  } catch (e) {
-    console.error("Failed to load todos from localStorage:", e);
-    return [];
-  }
-};
+// const loadTodos = () => {
+//   try {
+//     const data = localStorage.getItem("todos");
+//     return data ? JSON.parse(data) : [];
+//   } catch (e) {
+//     console.error("Failed to load todos from localStorage:", e);
+//     return [];
+//   }
+// };
 
-const saveTodos = (todos: any[]) => {
-  try {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  } catch (e) {
-    console.error("Failed to save todos to localStorage:", e);
-  }
-};
+// const saveTodos = (todos: any[]) => {
+//   try {
+//     localStorage.setItem("todos", JSON.stringify(todos));
+//   } catch (e) {
+//     console.error("Failed to save todos to localStorage:", e);
+//   }
+// };
 
 const initialState: TodoSliceInterface = {
-  todos: loadTodos(),
+  todos: [],
 };
 
 export const todosSlice = createSlice({
@@ -34,17 +34,22 @@ export const todosSlice = createSlice({
   reducers: {
     addTodo: (state, action) => {
       state.todos = [...state.todos, action.payload];
-      saveTodos(state.todos);
+      // saveTodos(state.todos);
     },
     deleteTodo: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-      saveTodos(state.todos);
+      // saveTodos(state.todos);
     },
     updateTodo: (state, action) => {
       state.todos = action.payload;
-      saveTodos(state.todos);
+      // saveTodos(state.todos);
+    },
+    setAllTodos: (state, action) => {
+      state.todos = action.payload;
+      // saveTodos(state.todos);
     },
   },
 });
-export const { addTodo, deleteTodo, updateTodo } = todosSlice.actions;
+export const { addTodo, deleteTodo, updateTodo, setAllTodos } =
+  todosSlice.actions;
 export default todosSlice.reducer;
