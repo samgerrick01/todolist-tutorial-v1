@@ -33,7 +33,7 @@ const HomePage = () => {
             <th style={{ width: "10%" }}>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ textAlign: "center" }}>
           {todos.map((todo) => (
             <tr key={todo.id}>
               <td>{todo.todoItem}</td>
