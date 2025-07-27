@@ -48,8 +48,11 @@ export const todosSlice = createSlice({
       state.todos = action.payload;
       // saveTodos(state.todos);
     },
+    resetState: (state) => {
+      state.todos = [];
+    },
   },
 });
-export const { addTodo, deleteTodo, updateTodo, setAllTodos } =
+export const { addTodo, deleteTodo, updateTodo, setAllTodos, resetState } =
   todosSlice.actions;
 export default todosSlice.reducer;

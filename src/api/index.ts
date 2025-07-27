@@ -1,12 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../utils/supabaseClient";
 import type { TodoItemsInterface } from "../utils/types";
+import { useAuth } from "../provider/AuthProvider";
 
 export const useFetchTodos = () => {
+  const { user } = useAuth();
   return useQuery<TodoItemsInterface[]>({
-    queryKey: ["todos"],
+    queryKey: [`todos ${user?.id}`],
     queryFn: async () => {
-      const { data, error } = await supabase.from("tbl_todos").select("*");
+      const { data, error } = await supabase
+        .from("tbl_todos")
+        .select("*")
+        .eq("uid", user?.id);
 
       if (error) {
         console.error("[Supabase] Error fetching statuses:", error);
@@ -25,12 +30,14 @@ export const useFetchTodos = () => {
 };
 
 export const useInsertTodo = () => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (todo: Omit<TodoItemsInterface, "id">) => {
       const newTodo = {
         todoItem: todo.todoItem,
         status: todo.status,
+        uid: user?.id,
       };
 
       const { data, error } = await supabase
