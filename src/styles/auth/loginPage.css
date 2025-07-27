@@ -1,0 +1,100 @@
+:root {
+  background-color: #f8f8f8;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.col-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15%;
+  gap: 10px;
+}
+
+.col-2 {
+  background-image: url("src/assets/img/auth-logo.png");
+  background-size: 100% 100%; /* 🔥 Force image to stretch full width & height */
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 44px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.login-subtitle,
+.login-title {
+  text-align: center;
+}
+
+.login-subtitle,
+.login-email-text,
+.login-password-text {
+  font-size: 14px;
+}
+
+.login-subtitle {
+  font-weight: 400;
+  color: #636364;
+}
+
+.login-email-text,
+.login-password-text,
+.login-forgot-text,
+.login-check-text {
+  font-weight: 500;
+  width: 100%;
+}
+
+.login-forgot-text {
+  font-size: 12px;
+  text-align: right;
+}
+
+.login-btn-style {
+  background: #ea454c;
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.login-btn-style:hover,
+.login-btn-style:focus {
+  background: #d43f46 !important;
+}
+
+.login-signup-text {
+  font-size: 12px;
+  color: #595959;
+  cursor: pointer;
+}
+
+.login-signup-text span {
+  color: #ea454c;
+}
+
+.login-div-spacer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-password-input,
+.login-email-input {
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  padding: 0 10px;
+}
