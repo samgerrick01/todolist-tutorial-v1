@@ -56,12 +56,13 @@ export const useInsertTodo = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: [`todos ${user?.id}`] });
     },
   });
 };
 
 export const useUpdateTodo = () => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (todo: TodoItemsInterface) => {
@@ -87,12 +88,13 @@ export const useUpdateTodo = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: [`todos ${user?.id}`] });
     },
   });
 };
 
 export const useDeleteTodo = () => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -105,7 +107,7 @@ export const useDeleteTodo = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["todos"],
+        queryKey: [`todos ${user?.id}`],
       });
     },
   });
